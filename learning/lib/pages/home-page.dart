@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning/components/task-list.dart';
 import 'package:learning/main.dart';
-import 'package:learning/models/task.dart';
+import 'package:learning/pages/homepage_bloc.dart';
 import 'package:learning/pages/new-task-page.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,20 +12,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Color colorDarkBlack = Color.fromRGBO(30, 30, 30, 1);
 
-  var tasks = new List<Task>();
+  HomePageBloc bloc = new HomePageBloc();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorDarkBlack,
       body: SafeArea(
-        child: TaskList(tasks),
+        child: StreamBuilder<Object>(
+          stream: bloc.output,
+          builder: (context, snapshot) {
+            return TaskList(snapshot.data);
+          }
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
 
-          analytics.logEvent(name: 'hello_world');
-
+          analytics.logEvent(name: 'creating_task');
           analytics.setCurrentScreen(screenName: 'CreateTaskScreen');
 
           var taskCreatedFromNavigation = await Navigator.push(
@@ -39,12 +43,9 @@ class _HomePageState extends State<HomePage> {
           if (taskCreatedFromNavigation != null) {
 
             analytics.logEvent(name: 'task_created');
-
             analytics.setCurrentScreen(screenName: 'HomeScreen');
 
-            setState(() {
-              tasks.add(taskCreatedFromNavigation);
-            });
+            bloc.addTask(taskCreatedFromNavigation);
           }
         },
         label: Text('New task'),

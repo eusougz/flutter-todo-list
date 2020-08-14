@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning/components/task-card.dart';
 import 'package:learning/models/task.dart';
+import 'package:learning/pages/homepage_bloc.dart';
 
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
@@ -13,6 +14,8 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   final Color colorWhite = Color.fromRGBO(220, 220, 220, 1);
+
+  HomePageBloc bloc = new HomePageBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +48,16 @@ class _TaskListState extends State<TaskList> {
                       )),
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    setState(() {
-                      widget.tasks.removeAt(index);
-                    });
+                    bloc.removeAt(index);
 
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text('Task removed')));
                   },
                   child: TaskCard(
                       task: widget.tasks[index],
-                      onCompleteTask: () => {
-                            setState(() {
-                              widget.tasks[index].complete();
-                            }),
-                          }),
+                      onCompleteTask: () => 
+                            bloc.completeAt(index)
+                          ),
                 ),
               );
             },

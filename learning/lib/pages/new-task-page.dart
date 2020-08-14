@@ -6,8 +6,8 @@ class NewTaskPage extends StatelessWidget {
   final Color colorDarkBlack = Color.fromRGBO(30, 30, 30, 1);
   final Color colorWhite = Color.fromRGBO(220, 220, 220, 1);
 
-  var nameInputController = TextEditingController();
-  var descriptionInputController = TextEditingController();
+  final nameInputController = TextEditingController();
+  final descriptionInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
