@@ -5,8 +5,9 @@ import 'package:learning/pages/homepage_bloc.dart';
 
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
+  final HomePageBloc bloc;
 
-  TaskList(this.tasks);
+  TaskList({this.tasks, this.bloc});
 
   @override
   _TaskListState createState() => _TaskListState();
@@ -14,8 +15,6 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   final Color colorWhite = Color.fromRGBO(220, 220, 220, 1);
-
-  HomePageBloc bloc = new HomePageBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _TaskListState extends State<TaskList> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.tasks.length,
+            itemCount: widget.tasks?.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
@@ -48,16 +47,17 @@ class _TaskListState extends State<TaskList> {
                       )),
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    bloc.removeAt(index);
+                    widget.bloc.removeAt(index);
 
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text('Task removed')));
                   },
                   child: TaskCard(
                       task: widget.tasks[index],
-                      onCompleteTask: () => 
-                            bloc.completeAt(index)
-                          ),
+                      onCompleteTask: () => {
+                        widget.bloc.completeAt(index)
+                      }
+                  ),
                 ),
               );
             },

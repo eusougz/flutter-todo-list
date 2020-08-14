@@ -5,7 +5,7 @@ import 'package:learning/pages/task-infos-page.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
-  final Function() onCompleteTask;
+  final void Function() onCompleteTask;
 
   final Color colorWhite = Colors.white;
   final Color colorBlack = Color.fromRGBO(80, 80, 80, 1);
@@ -40,7 +40,7 @@ class TaskCard extends StatelessWidget {
                                   Icons.check_circle_outline,
                                   color: colorWhite,
                                 ),
-                                onPressed: () => {onCompleteTask()},
+                                onPressed: onCompleteTask,
                               ),
                             ),
                     ),

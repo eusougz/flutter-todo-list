@@ -9,6 +9,10 @@ class HomePageBloc {
 
   Sink<List<Task>> get _input => _streamController.sink;
   Stream<List<Task>> get output => _streamController.stream;
+
+  HomePageBloc() {
+    _input.add(tasks);
+  }
   
   void addTask(Task task) {
     tasks.add(task);

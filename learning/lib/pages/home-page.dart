@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         child: StreamBuilder<Object>(
           stream: bloc.output,
           builder: (context, snapshot) {
-            return TaskList(snapshot.data);
+            return TaskList(tasks: snapshot.data, bloc: bloc);
           }
         ),
       ),
